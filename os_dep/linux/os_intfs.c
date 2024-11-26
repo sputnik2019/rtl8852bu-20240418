@@ -21,6 +21,9 @@ MODULE_DESCRIPTION("Realtek Wireless Lan Driver");
 MODULE_AUTHOR("Realtek Semiconductor Corp.");
 MODULE_VERSION(DRIVERVERSION);
 
+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(6, 8, 0))
+#define strlcpy(p, q, s) strscpy(p, q, s)
+#endif
 
 int netdev_open(struct net_device *pnetdev);
 static int netdev_close(struct net_device *pnetdev);
