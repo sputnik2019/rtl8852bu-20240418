@@ -25,8 +25,11 @@ EXTRA_CFLAGS += -Wno-missing-declarations
 #EXTRA_CFLAGS += -Wno-cast-function-type
 
 EXTRA_CFLAGS += -Wno-enum-int-mismatch
+#EXTRA_CFLAGS += -Wno-stringop-overread
 EXTRA_CFLAGS += -Wno-enum-conversion
+#EXTRA_CFLAGS += -Wno-int-in-bool-context
 EXTRA_CFLAGS += -Wno-missing-prototypes
+#EXTRA_CFLAGS += -Wno-missing-declarations
 
 EXTRA_CFLAGS += -Wno-empty-body
 EXTRA_CFLAGS += -Wno-old-style-declaration
@@ -176,7 +179,7 @@ endif
 CONFIG_RTW_DEBUG = y
 # default log level is _DRV_INFO_ = 4,
 # please refer to "How_to_set_driver_debug_log_level.doc" to set the available level.
-CONFIG_RTW_LOG_LEVEL = 4
+CONFIG_RTW_LOG_LEVEL = 0
 CONFIG_RTW_PHL_LOG_LEVEL = 0
 
 # CONFIG_RTW_APPEND_LOGLEVEL decide if append kernel log level to each messages.
@@ -864,10 +867,14 @@ strip:
 install:
 	install -p -m 644 $(MODULE_NAME).ko  $(MODDESTDIR)
 	/sbin/depmod -a ${KVER}
+	cp -f $(MODULE_NAME).conf /etc/modprobe.d
+	sh edit-options.sh
 
 uninstall:
 	rm -f $(MODDESTDIR)$(MODULE_NAME).ko
 	/sbin/depmod -a ${KVER}
+	rm -f /etc/modprobe.d/$(MODULE_NAME).conf
+	@echo "uninstall comlete"
 
 sign:
 	@openssl req -new -x509 -newkey rsa:2048 -keyout MOK.priv -outform DER -out MOK.der -nodes -days 36500 -subj "/CN=Custom MOK/"

@@ -50,9 +50,13 @@ following links will provide more information:
   * AP (see file hpstapd-rtl8852bu.conf)
   * P2P-client
   * P2P-GO
-- VHT control (allows 160 MHz channel width in AP mode)
-- HE control (allows 160 MHz channel width in AP mode)
+- VHT control (allows 80 MHz channel width in AP mode)
+- HE control (allows 80 MHz channel width in AP mode)
 - USB mode control
+
+> [!NOTE]
+> Monitor mode is not supported.
+> Linux users that want good support for monitor mode in a dual band or tri-band adapter should seek out USB WiFi adapters based on the mt7610u, mt7612u or mt7921au chipsets.
 
 ### A FAQ is available in this repo with the name `FAQ.md`
 
@@ -73,7 +77,9 @@ the hardware to test the above.
 ### Compatible Kernels
 
 - Kernels: 5.4 - 6.6 (Realtek)
-- Kernels: 6.7 - 6.12 (community support)
+- Kernels: 6.7 - 6.11 (community support)
+
+Kernel 6.12 is going to require significant work.
 
 Note: Kernels earlier than 5.4 may work but are not tested or
 supported.

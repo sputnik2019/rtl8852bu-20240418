@@ -21,6 +21,9 @@
 # situations. To remove executable from files only, run the following
 # in the subdirectories:
 #
+# Warning: Do not run the following in the directory that contains the
+# script files as they need to be executable!
+#
 # find . -type f -exec chmod -x {} \;
 #
 # To check for errors and to check that this script does not require bash:
@@ -39,7 +42,7 @@
 # GNU General Public License for more details.
 
 SCRIPT_NAME="install-driver.sh"
-SCRIPT_VERSION="20241128"
+SCRIPT_VERSION="20241208"
 
 MODULE_NAME="8852bu"
 
@@ -110,6 +113,10 @@ fi
 
 echo ": ---------------------------"
 
+# display notice
+echo ": Please copy and post all below lines when reporting an issue!"
+
+echo ": ---------------------------"
 
 # displays script name and version
 echo ": ${SCRIPT_NAME} v${SCRIPT_VERSION}"
@@ -175,6 +182,16 @@ if command -v mokutil >/dev/null 2>&1; then
 	esac
 else
 	echo ": mokutil not installed (Secure Boot status unknown)"
+fi
+
+# display result of `iw reg get`
+# https://docs.kernel.org/networking/regulatory.html
+# https://www.marcusfolkesson.se/blog/linux-wireless-regulatory/
+if command -v iw >/dev/null 2>&1; then
+	echo ": Linux Wireless Regulatory Settings:"
+	iw reg get | grep -i 'global\|country\|phy#'
+	echo ": Info: https://docs.kernel.org/networking/regulatory.html"
+	echo ": Info: https://www.marcusfolkesson.se/blog/linux-wireless-regulatory/"
 fi
 
 echo ": ---------------------------"
