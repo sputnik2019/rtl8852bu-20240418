@@ -991,7 +991,11 @@ static void async_cac_change_work_hdl(_workitem *work)
 		evt = LIST_CONTAINOR(list, struct async_cac_change_evt, list);
 
 		rtnl_lock();
+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(6, 12, 0))
+		cfg80211_cac_event(evt->netdev, &evt->chandef, evt->event, GFP_KERNEL, 0);
+#else
 		cfg80211_cac_event(evt->netdev, &evt->chandef, evt->event, GFP_KERNEL);
+#endif
 		rtnl_unlock();
 
 		rtw_mfree(evt, sizeof(*evt));
@@ -1081,7 +1085,11 @@ static void rtw_cfg80211_cac_event(struct rf_ctl_t *rfctl, u8 band_idx
 		if (async)
 			cfg80211_cac_event_async(iface->pnetdev, &chdef, event);
 		else
+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(6, 12, 0))
+			cfg80211_cac_event(iface->pnetdev, &chdef, event, GFP_KERNEL, 0);
+#else
 			cfg80211_cac_event(iface->pnetdev, &chdef, event, GFP_KERNEL);
+#endif
 	}
 }
 
@@ -1119,8 +1127,13 @@ void rtw_cfg80211_cac_finished_event(struct rf_ctl_t *rfctl, u8 band_idx
 		if (!iface || !(ifbmp & BIT(iface->iface_id)))
 			continue;
 		/* finish only for wdev with cac_started */
+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(6, 12, 0))
+		if (!iface->rtw_wdev || !iface->rtw_wdev->links[0].cac_started)
+			ifbmp &= ~BIT(iface->iface_id);
+#else
 		if (!iface->rtw_wdev || !iface->rtw_wdev->cac_started)
 			ifbmp &= ~BIT(iface->iface_id);
+#endif
 	}
 
 	rtw_cfg80211_cac_event(rfctl, band_idx, ifbmp, cch, bw, NL80211_RADAR_CAC_FINISHED, __func__);
@@ -1142,8 +1155,13 @@ void rtw_cfg80211_cac_aborted_event(struct rf_ctl_t *rfctl, u8 band_idx
 		if (!iface || !(ifbmp & BIT(iface->iface_id)))
 			continue;
 		/* abort only for wdev with cac_started */
+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(6, 12, 0))
+		if (!iface->rtw_wdev || !iface->rtw_wdev->links[0].cac_started)
+			ifbmp &= ~BIT(iface->iface_id);
+#else
 		if (!iface->rtw_wdev || !iface->rtw_wdev->cac_started)
 			ifbmp &= ~BIT(iface->iface_id);
+#endif
 	}
 
 	rtw_cfg80211_cac_event(rfctl, band_idx, ifbmp, cch, bw, NL80211_RADAR_CAC_ABORTED, __func__);
@@ -1229,10 +1247,17 @@ void rtw_cfg80211_cac_force_finished(struct rf_ctl_t *rfctl, u8 band_idx
 			started_ifbmp &= ~BIT(iface->iface_id);
 			continue;
 		}
+#if (LINUX_VERSION_CODE >= KERNEL_VERSION(6, 12, 0))
+		if (need_start && iface->rtw_wdev->links[0].cac_started)
+			started_ifbmp &= ~BIT(iface->iface_id);
+		else if (!need_start && !iface->rtw_wdev->links[0].cac_started)
+			finished_ifbmp &= ~BIT(iface->iface_id);
+#else
 		if (need_start && iface->rtw_wdev->cac_started)
 			started_ifbmp &= ~BIT(iface->iface_id);
 		else if (!need_start && !iface->rtw_wdev->cac_started)
 			finished_ifbmp &= ~BIT(iface->iface_id);
+#endif
 	}
 
 	/* send CAC_STARTED to set cac_started */

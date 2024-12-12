@@ -77,9 +77,7 @@ the hardware to test the above.
 ### Compatible Kernels
 
 - Kernels: 5.4 - 6.6 (Realtek)
-- Kernels: 6.7 - 6.11 (community support)
-
-Kernel 6.12 is going to require significant work.
+- Kernels: 6.7 - 6.12 (community support)
 
 Note: Kernels earlier than 5.4 may work but are not tested or
 supported.
