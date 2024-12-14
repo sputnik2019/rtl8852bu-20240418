@@ -116,7 +116,9 @@ echo ": ---------------------------"
 # display notice
 echo ": Please copy and post all below lines when reporting an issue!"
 
+
 echo ": ---------------------------"
+
 
 # displays script name and version
 echo ": ${SCRIPT_NAME} v${SCRIPT_VERSION}"
@@ -128,6 +130,7 @@ echo ": ${KARCH} (kernel architecture)"
 
 # display architecture to send to gcc
 echo ": ${GARCH} (architecture to send to gcc)"
+
 
 SMEM=$(LC_ALL=C free | awk '/Mem:/ { print $2 }')
 sproc=$(nproc)
@@ -184,6 +187,7 @@ else
 	echo ": mokutil not installed (Secure Boot status unknown)"
 fi
 
+
 # display result of `iw reg get`
 # https://docs.kernel.org/networking/regulatory.html
 # https://www.marcusfolkesson.se/blog/linux-wireless-regulatory/
@@ -193,6 +197,7 @@ if command -v iw >/dev/null 2>&1; then
 	echo ": Info: https://docs.kernel.org/networking/regulatory.html"
 	echo ": Info: https://www.marcusfolkesson.se/blog/linux-wireless-regulatory/"
 fi
+
 
 echo ": ---------------------------"
 echo
@@ -332,8 +337,10 @@ if command -v dkms >/dev/null 2>&1; then
 	fi
 fi
 
+
 echo "Finished checking for and uninstalling previously installed drivers."
 echo ": ---------------------------"
+
 
 echo
 #echo "Updating driver."

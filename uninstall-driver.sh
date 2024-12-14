@@ -1,24 +1,24 @@
 #!/bin/sh
 
-# Purpose: Remove Realtek out-of-kernel USB WiFi adapter drivers.
+# Purpose: Uninstall Realtek out-of-kernel USB WiFi adapter drivers.
 #
 # Supports dkms and non-dkms removals.
 #
 # To make this file executable:
 #
-# $ chmod +x remove-driver.sh
+# $ chmod +x uninstall-driver.sh
 #
 # To execute this file:
 #
-# $ sudo ./remove-driver.sh
+# $ sudo ./uninstall-driver.sh
 #
 # or
 #
-# $ sudo sh remove-driver.sh
+# $ sudo sh uninstall-driver.sh
 #
 # To check for errors and to check that this script does not require bash:
 #
-# $ shellcheck remove-driver.sh
+# $ shellcheck uninstall-driver.sh
 #
 # Copyright(c) 2024 Nick Morrow
 #
@@ -31,8 +31,8 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 # GNU General Public License for more details.
 
-SCRIPT_NAME="remove-driver.sh"
-SCRIPT_VERSION="20241128"
+SCRIPT_NAME="uninstall-driver.sh"
+SCRIPT_VERSION="20241208"
 
 MODULE_NAME="8852bu"
 
@@ -146,7 +146,7 @@ if [ -f "/usr/lib/modules/${KVER}/kernel/drivers/net/wireless/${DRV_NAME}/${MODU
 fi
 
 
-# check for and remove dkms installations
+# check for and uninstall dkms installations
 if command -v dkms >/dev/null 2>&1; then
 	dkms status | while IFS="/,: " read -r drvname drvver kerver _dummy; do
 		case "$drvname" in *${MODULE_NAME})
@@ -154,7 +154,7 @@ if command -v dkms >/dev/null 2>&1; then
 				echo "Removing a driver that was added to dkms."
 				dkms remove -m "${drvname}" -v "${drvver}" --all
 			else
-				echo "Removing a driver that was installed by dkms."
+				echo "Uninstalling a driver that was installed by dkms."
 				dkms remove -m "${drvname}" -v "${drvver}" -k "${kerver}" -c "/usr/src/${drvname}-${drvver}/dkms.conf"
 			fi
 		esac

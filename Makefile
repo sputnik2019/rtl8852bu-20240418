@@ -854,17 +854,12 @@ export CONFIG_RTL8852BU = m
 all: modules
 
 modules:
-#	rm -f .symvers.$(MODULE_NAME)
-
-	$(MAKE) ARCH=$(ARCH) CROSS_COMPILE=$(CROSS_COMPILE) -C $(KSRC) M=$(M)  modules
-
-#	$(CC_STRIP) --strip-unneeded ${OUT_DIR}/$(M)/$(MODULE_NAME).ko
-#	cp Module.symvers .symvers.$(MODULE_NAME)
+	$(MAKE) ARCH=$(ARCH) CROSS_COMPILE=$(CROSS_COMPILE) -C $(KSRC) M=$(shell pwd) modules
 
 strip:
 	$(CC_STRIP) $(MODULE_NAME).ko --strip-unneeded
 
-install:
+install: all
 	install -p -m 644 $(MODULE_NAME).ko  $(MODDESTDIR)
 	/sbin/depmod -a ${KVER}
 	cp -f $(MODULE_NAME).conf /etc/modprobe.d
@@ -877,9 +872,9 @@ uninstall:
 	@echo "uninstall comlete"
 
 sign:
-	@openssl req -new -x509 -newkey rsa:2048 -keyout MOK.priv -outform DER -out MOK.der -nodes -days 36500 -subj "/CN=Custom MOK/"
-	@mokutil --import MOK.der
-	@$(KSRC)/scripts/sign-file sha256 MOK.priv MOK.der 8852bu.ko
+	openssl req -new -x509 -newkey rsa:2048 -keyout MOK.priv -outform DER -out MOK.der -nodes -days 36500 -subj "/CN=Custom MOK/"
+	mokutil --import MOK.der
+	$(KSRC)/scripts/sign-file sha256 MOK.priv MOK.der $(MODULE_NAME).ko
 
 sign-install: all sign install
 
