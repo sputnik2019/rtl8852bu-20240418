@@ -15,9 +15,9 @@ We can search the list of driver supported IDs shown below.
 
 Realtek default IDs
 
-ID 0bda:b852 - Default ID for USB multi-function (WiFi plus bluetooth)
 ID 0bda:b832 - Default ID for USB Single-function, WiFi only
 ID 0bda:b83a - Default ID
+ID 0bda:b852 - Default ID for USB multi-function (WiFi plus bluetooth)
 ID 0bda:b85a - Default ID
 ID 0bda:a85b - Default ID
 
@@ -25,11 +25,11 @@ Seller specific IDs
 
 ID 0586:3428 ZyXEL NWD7605
 ID 0b05:1a62 ASUS USB-AX55 Nano
-ID 3574:6121 COMFAST CF-943AX
-ID 7392:6822 EDIMAX EW-7822UMX
 ID 0db0:6931 MSI AX1800
-ID 35bc:0108 TP-LINK Archer TX20U Nano
+ID 3574:6121 COMFAST CF-943AX
 ID 35bc:0100 TP-LINK TX20U
+ID 35bc:0108 TP-LINK Archer TX20U Nano
+ID 7392:6822 EDIMAX EW-7822UMX
 
 If your adapter matches one of the default or seller specific
 IDs then this is the driver to use.
