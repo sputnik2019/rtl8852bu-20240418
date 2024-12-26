@@ -36,6 +36,11 @@ EXTRA_CFLAGS += -Wno-old-style-declaration
 EXTRA_CFLAGS += -Wno-restrict
 EXTRA_CFLAGS += -Wno-discarded-qualifiers
 
+# To ensure the driver is the redb from the os
+EXTRA_CFLAGS += -DCONFIG_REGD_SRC_FROM_OS
+# May be needed to ensure all channels are scanned
+#EXTRA_CFLAGS += -DCONFIG_FORCE_SW_CHANNEL_PLAN
+
 ############ ANDROID COMMON KERNEL ############
 # clang
 ifeq ($(CC), clang)
