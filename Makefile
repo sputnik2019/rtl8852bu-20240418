@@ -36,11 +36,6 @@ EXTRA_CFLAGS += -Wno-old-style-declaration
 EXTRA_CFLAGS += -Wno-restrict
 EXTRA_CFLAGS += -Wno-discarded-qualifiers
 
-# To ensure the driver is the redb from the os
-EXTRA_CFLAGS += -DCONFIG_REGD_SRC_FROM_OS
-# May be needed to ensure all channels are scanned
-#EXTRA_CFLAGS += -DCONFIG_FORCE_SW_CHANNEL_PLAN
-
 ############ ANDROID COMMON KERNEL ############
 # clang
 ifeq ($(CC), clang)
@@ -255,7 +250,8 @@ CONFIG_LAYER2_ROAMING = y
 CONFIG_ROAMING_FLAG = 0x3
 
 ###################### Platform Related #######################
-CONFIG_PLATFORM_I386_PC = y
+CONFIG_PLATFORM_AUTODETECT = y
+CONFIG_PLATFORM_I386_PC = n
 CONFIG_PLATFORM_RTL8198D = n
 CONFIG_PLATFORM_ANDROID_X86 = n
 CONFIG_PLATFORM_ANDROID_INTEL_X86 = n
