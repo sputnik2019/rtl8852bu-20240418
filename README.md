@@ -37,7 +37,6 @@ following links will provide more information:
 - Wake on WLAN
 - AP mode DFS channel support
 - Supported interface modes
-  * IBSS (not tested)
   * Managed
   * AP (see file hpstapd-rtl8852bu.conf)
   * P2P-client
