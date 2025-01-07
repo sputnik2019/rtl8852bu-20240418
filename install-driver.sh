@@ -28,7 +28,7 @@
 #
 # To check for errors and to check that this script does not require bash:
 #
-# $ shellcheck remove-driver.sh
+# $ shellcheck install-driver.sh
 #
 # Copyright(c) 2024 Nick Morrow
 #
@@ -314,7 +314,7 @@ if [ -f "/usr/lib/modules/${KVER}/kernel/drivers/net/wireless/${DRV_NAME}/${MODU
 fi
 
 
-# check for and remove dkms installations
+# check for and uninstall dkms installations
 if command -v dkms >/dev/null 2>&1; then
 	dkms status | while IFS="/,: " read -r drvname drvver kerver _dummy; do
 		case "$drvname" in *${MODULE_NAME})
@@ -364,7 +364,7 @@ if ! command -v dkms >/dev/null 2>&1; then
 		echo "Please report this error."
 		echo "Please copy all screen output and paste it into the problem report."
 		echo "You will need to run the following before reattempting installation."
-		echo "$ sudo ./remove-driver.sh"
+		echo "$ sudo ./uninstall-driver.sh"
 		exit $RESULT
 	fi
 
@@ -394,7 +394,7 @@ if ! command -v dkms >/dev/null 2>&1; then
 		echo "Please report this error."
 		echo "Please copy all screen output and paste it into the problem report."
 		echo "You will need to run the following before reattempting installation."
-		echo "$ sudo ./remove-driver.sh"
+		echo "$ sudo ./uninstall-driver.sh"
 		exit $RESULT
 	fi
 else
@@ -417,14 +417,14 @@ else
 		if [ "$RESULT" = "3" ]; then
 			echo "This driver may already be installed."
 			echo "Run the following and then reattempt installation."
-			echo "$ sudo ./remove-driver.sh"
+			echo "$ sudo ./uninstall-driver.sh"
 			exit $RESULT
 		else
 			echo "An error occurred. dkms add error:  ${RESULT}"
 			echo "Please report this error."
 			echo "Please copy all screen output and paste it into the problem report."
 			echo "Run the following before reattempting installation."
-			echo "$ sudo ./remove-driver.sh"
+			echo "$ sudo ./uninstall-driver.sh"
 			exit $RESULT
 		fi
 	else
@@ -449,7 +449,7 @@ else
 		echo "Please report this error."
 		echo "Please copy all screen output and paste it into the problem report."
 		echo "Run the following before reattempting installation."
-		echo "$ sudo ./remove-driver.sh"
+		echo "$ sudo ./uninstall-driver.sh"
 		exit $RESULT
 	else
 		echo "The driver was built by dkms successfully."
@@ -467,7 +467,7 @@ else
 		echo "Please report this error."
 		echo "Please copy all screen output and paste it into the problem report."
 		echo "Run the following before reattempting installation."
-		echo "$ sudo ./remove-driver.sh"
+		echo "$ sudo ./uninstall-driver.sh"
 		exit $RESULT
 	else
 		echo "The driver was installed by dkms successfully."

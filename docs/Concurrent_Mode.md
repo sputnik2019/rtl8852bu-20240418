@@ -49,7 +49,7 @@ and then install the driver per the installation steps. If
 the driver is already installed, run the following first:
 
 ```
-sudo ./remove-driver.sh
+sudo ./uninstall-driver.sh
 ```
 and then reinstall the driver with:
 
