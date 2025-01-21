@@ -1,6 +1,6 @@
 ## rtl8852bu ( 8852bu.ko ) :rocket:
 
-## Linux Driver for USB WiFi Adapters that are based on the RTL8852BU and RTL8832BU Chipsets
+## Linux Driver for USB WiFi Adapters that are based on the RTL8832BU and RTL8852BU Chipsets
 
 - v1.19.14-127 - 20240418 plus updates from the Linux community
 - Realtek development of this driver is ongoing.
@@ -70,7 +70,7 @@ the hardware to test the above.
 ### Compatible Kernels
 
 - Kernels: 5.4 - 6.6 (Realtek)
-- Kernels: 6.7 - 6.12 (community support)
+- Kernels: 6.7 - 6.13 (community support)
 
 Note: Kernels earlier than 5.4 may work but are not tested or
 supported.
@@ -96,7 +96,7 @@ which can be provided via PR or message in Issues.
 
 - [openSUSE](https://www.opensuse.org/) Tumbleweed (rolling) (kernel 5.15)
 
-- [Raspberry Pi OS](https://www.raspberrypi.org) (2023-10-10)(kernel 6.6)
+- [Raspberry Pi OS](https://www.raspberrypi.org) (2024-11-19)(kernel 6.6)
 
 - [Raspberry Pi Desktop](https://www.raspberrypi.org) (2022-07-01) (x86 32 bit) (kernel 5.10)
 
@@ -126,8 +126,11 @@ already supported Mediatek chipsets.
 
 ### Compatible Devices
 
-Warning: The below adapters are multi-state adapters, meaning that they
-have an internal Windows driver, and may be problematic on Linux.
+EDIMAX EW-7822UMX
+
+Warning: The below adapters are also compatible but are multi-state
+adapters, meaning that they have an internal Windows driver, and may be
+problematic.
 
 * Brostrend AX1L
 * Brostrend AX4L
@@ -171,8 +174,8 @@ sudo dkms status
 Warning: If you decide to do a distro upgrade, which will likely install
 a new major version of the kernel such as 5.15 to 6.1, you need to
 update this driver with the newest available code and then run the
-`uninstall-driver.sh` script before performing the disto upgrade. Use the
-following commands in the driver directory:
+`uninstall-driver.sh` script before performing the disto upgrade. Use
+the following commands in the driver directory:
 
 ```
 git pull
@@ -186,7 +189,7 @@ sudo sh uninstall-driver.sh
 ```
 
 Note: The following command will reinstall the updated driver after you
-are finished with the distro upgrade and reboot.
+are finished with the distro upgrade.
 
 ```
 sudo sh install-driver.sh
@@ -226,9 +229,9 @@ in the FAQ.
 
 Note: The installation steps are for the novice user. Experienced
 users are welcome to alter the installation to meet their needs. Support
-will be provided, on a best effort basis, based on the steps below. Another
-way to word this paragraph is that if you do not follow the below steps for
-installation, you are your own tech support.
+will be provided, on a best effort basis, based on the steps below.
+Another way to word this paragraph is that if you do not follow the
+below steps for installation, you are your own tech support.
 
 #### Step 1: Open a terminal (e.g. Ctrl+Alt+T)
 
