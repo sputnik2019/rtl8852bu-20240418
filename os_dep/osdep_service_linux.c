@@ -396,7 +396,6 @@ static int openFile(struct file **fpp, const char *path, int flag, int mode)
 {
 	struct file *fp;
 
-	MODULE_IMPORT_NS(VFS_internal_I_am_really_a_filesystem_and_am_NOT_a_driver);
 	fp = filp_open(path, flag, mode);
 	if (IS_ERR(fp)) {
 		*fpp = NULL;
@@ -431,7 +430,6 @@ static int readFile(struct file *fp, char *buf, int len)
 
 	while (sum < len) {
 #if (LINUX_VERSION_CODE >= KERNEL_VERSION(4, 14, 0))
-		MODULE_IMPORT_NS(VFS_internal_I_am_really_a_filesystem_and_am_NOT_a_driver);
 		rlen = kernel_read(fp, buf + sum, len - sum, &fp->f_pos);
 #elif (LINUX_VERSION_CODE >= KERNEL_VERSION(4, 1, 0))
 		rlen = __vfs_read(fp, buf + sum, len - sum, &fp->f_pos);
@@ -463,7 +461,6 @@ static int writeFile(struct file *fp, char *buf, int len)
 
 	while (sum < len) {
 #if (LINUX_VERSION_CODE >= KERNEL_VERSION(4, 14, 0))
-		MODULE_IMPORT_NS(VFS_internal_I_am_really_a_filesystem_and_am_NOT_a_driver);
 		wlen = kernel_write(fp, buf + sum, len - sum, &fp->f_pos);
 #elif (LINUX_VERSION_CODE >= KERNEL_VERSION(4, 1, 0))
 		wlen = __vfs_write(fp, buf + sum, len - sum, &fp->f_pos);
@@ -511,7 +508,6 @@ static int isFileReadable(const char *path, u32 *sz)
 	#endif
 	char buf;
 
-	MODULE_IMPORT_NS(VFS_internal_I_am_really_a_filesystem_and_am_NOT_a_driver);
 	fp = filp_open(path, O_RDONLY, 0);
 	if (IS_ERR(fp))
 		ret = PTR_ERR(fp);
@@ -730,7 +726,6 @@ int rtw_is_file_readable(const char *path)
 	else
 		return _FALSE;
 #else
-	MODULE_IMPORT_NS(VFS_internal_I_am_really_a_filesystem_and_am_NOT_a_driver);
 	RTW_INFO("%s() Android GKI prohibbit kernel_read, return _TRUE\n", __func__);
 	return  _TRUE;
 #endif /* !defined(CONFIG_RTW_ANDROID_GKI) */
@@ -750,7 +745,6 @@ int rtw_is_file_readable_with_size(const char *path, u32 *sz)
 	else
 		return _FALSE;
 #else
-	MODULE_IMPORT_NS(VFS_internal_I_am_really_a_filesystem_and_am_NOT_a_driver);
 	RTW_INFO("%s() Android GKI prohibbit kernel_read, return _TRUE\n", __func__);
 	*sz = 0;
 	return  _TRUE;
