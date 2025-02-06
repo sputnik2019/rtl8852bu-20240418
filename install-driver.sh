@@ -187,16 +187,20 @@ else
 	echo ": mokutil not installed (Secure Boot status unknown)"
 fi
 
+# display if VM detected
+#dmesg | grep -i hypervisor
+# example output
+# [ 0.000000] Hypervisor detected: KVM
 
 # display result of `iw reg get`
 # https://docs.kernel.org/networking/regulatory.html
 # https://www.marcusfolkesson.se/blog/linux-wireless-regulatory/
-if command -v iw >/dev/null 2>&1; then
-	echo ": Linux Wireless Regulatory Settings:"
-	iw reg get | grep -i 'global\|country\|phy#'
-	echo ": Info: https://docs.kernel.org/networking/regulatory.html"
-	echo ": Info: https://www.marcusfolkesson.se/blog/linux-wireless-regulatory/"
-fi
+#if command -v iw >/dev/null 2>&1; then
+#	echo ": Linux Wireless Regulatory Settings:"
+#	iw reg get | grep -i 'global\|country\|phy#'
+#	echo ": Info: https://docs.kernel.org/networking/regulatory.html"
+#	echo ": Info: https://www.marcusfolkesson.se/blog/linux-wireless-regulatory/"
+#fi
 
 
 echo ": ---------------------------"

@@ -35,6 +35,7 @@ EXTRA_CFLAGS += -Wno-empty-body
 EXTRA_CFLAGS += -Wno-old-style-declaration
 EXTRA_CFLAGS += -Wno-restrict
 EXTRA_CFLAGS += -Wno-discarded-qualifiers
+EXTRA_CFLAGS += -Wno-incompatible-pointer-types
 
 ############ ANDROID COMMON KERNEL ############
 # clang
@@ -946,18 +947,18 @@ endif
 
 ############ ANDROID COMMON KERNEL ############
 # Convert to absolute path
-ifneq ($(srctree),)
-_EXTRA_CFLAGS :=
-_INC_CFLAGS :=
-$(foreach flag,$(EXTRA_CFLAGS),\
- $(if $(shell echo $(flag) | grep "\-I"),\
-  $(eval _INC_CFLAGS += $(flag)),\
-  $(eval _EXTRA_CFLAGS += $(flag))\
- )\
-)
-_INC_CFLAGS := \
-$(foreach flag,$(subst -I,,$(_INC_CFLAGS)),\
- $(shell if test -d $(srctree)/$(flag); then echo -I$$(cd $(srctree)/$(flag) && pwd); else echo -I$(flag); fi)\
-)
-EXTRA_CFLAGS := $(_EXTRA_CFLAGS) $(_INC_CFLAGS)
-endif
+#ifneq ($(srctree),)
+#_EXTRA_CFLAGS :=
+#_INC_CFLAGS :=
+#$(foreach flag,$(EXTRA_CFLAGS),\
+# $(if $(shell echo $(flag) | grep "\-I"),\
+#  $(eval _INC_CFLAGS += $(flag)),\
+#  $(eval _EXTRA_CFLAGS += $(flag))\
+# )\
+#)
+#_INC_CFLAGS := \
+#$(foreach flag,$(subst -I,,$(_INC_CFLAGS)),\
+# $(shell if test -d $(srctree)/$(flag); then echo -I$$(cd $(srctree)/$(flag) && pwd); else echo -I$(flag); fi)\
+#)
+#EXTRA_CFLAGS := $(_EXTRA_CFLAGS) $(_INC_CFLAGS)
+#endif
