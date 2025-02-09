@@ -37,6 +37,7 @@ following links will provide more information:
 - Wake on WLAN
 - AP mode DFS channel support
 - Supported interface modes
+  * IBSS (not tested)
   * Managed
   * AP (see file hpstapd-rtl8852bu.conf)
   * P2P-client
@@ -63,17 +64,16 @@ following links will provide more information:
 - x86-64, amd64
 - armv6l, armv7l (arm)
 - aarch64 (arm64)
+- riscv
 
-Note: Additional CPU architectures may work but I currently only have
-the hardware to test the above.
+Note: Additional CPU architectures may work but have not been tested.
 
 ### Compatible Kernels
 
-- Kernels: 5.4 - 6.6 (Realtek)
-- Kernels: 6.7 - 6.13 (community support)
+- Kernels: 5.10 - 6.6 (Realtek)
+- Kernels: 6.7  - 6.14 (community support)
 
-Note: Kernels earlier than 5.4 may work but are not tested or
-supported.
+Note: Kernels earlier than 5.10 may work but have not been tested.
 
 ### Tested Compilers
 
@@ -126,7 +126,7 @@ already supported Mediatek chipsets.
 
 ### Compatible Devices
 
-EDIMAX EW-7822UMX
+EDIMAX EW-7822UMX (single-state, no windows driver onboard)
 
 Warning: The below adapters are also compatible but are multi-state
 adapters, meaning that they have an internal Windows driver, and may be
@@ -137,6 +137,7 @@ problematic.
 * ALFA AWUS036AXER
 * ALFA AWUS036AX
 * ASUS USB-AX55 Nano
+
 * Additional adapters that are based on the supported chipsets.
 
 Note: If you are looking for information about what adapter to buy,
@@ -172,7 +173,7 @@ sudo dkms status
 ```
 
 Warning: If you decide to do a distro upgrade, which will likely install
-a new major version of the kernel such as 5.15 to 6.1, you need to
+a new major version of the kernel such as 6.1 to 6.6, you need to
 update this driver with the newest available code and then run the
 `uninstall-driver.sh` script before performing the disto upgrade. Use
 the following commands in the driver directory:
