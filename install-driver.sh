@@ -30,7 +30,7 @@
 #
 # $ shellcheck install-driver.sh
 #
-# Copyright(c) 2024 Nick Morrow
+# Copyright(c) 2025 Nick Morrow
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of version 2 of the GNU General Public License as
@@ -42,7 +42,7 @@
 # GNU General Public License for more details.
 
 SCRIPT_NAME="install-driver.sh"
-SCRIPT_VERSION="20241208"
+SCRIPT_VERSION="20250224"
 
 MODULE_NAME="8852bu"
 
@@ -111,13 +111,13 @@ if ! command -v "${TEXT_EDITOR}" >/dev/null 2>&1; then
 	exit 1
 fi
 
-echo ": ---------------------------"
+echo ": -------------------------------------------------------------"
 
 # display notice
-echo ": Please copy and post all below lines when reporting an issue!"
+echo ": Please copy and post all lines below when reporting an issue!"
 
 
-echo ": ---------------------------"
+echo ": -------------------------------------------------------------"
 
 
 # displays script name and version
@@ -188,9 +188,17 @@ else
 fi
 
 # display if VM detected
-#dmesg | grep -i hypervisor
+if command -v dmesg >/dev/null 2>&1; then
+	VM_detected=""
+	VM_detected=dmesg | grep -i hypervisor
+	if [ -z "$VM_detected" ]; then
+		echo ": VM not detected"
+	else
+		echo ": VM detected: $VM_detected"
+	fi
 # example output
 # [ 0.000000] Hypervisor detected: KVM
+fi
 
 # display result of `iw reg get`
 # https://docs.kernel.org/networking/regulatory.html
@@ -203,7 +211,6 @@ fi
 #fi
 
 
-echo ": ---------------------------"
 echo
 
 
@@ -323,33 +330,34 @@ if command -v dkms >/dev/null 2>&1; then
 	dkms status | while IFS="/,: " read -r drvname drvver kerver _dummy; do
 		case "$drvname" in *${MODULE_NAME})
 			if [ "${kerver}" = "added" ]; then
-				echo "Removing a driver that was added to dkms."
+				echo "Uninstalling a driver that was added to dkms."
 				dkms remove -m "${drvname}" -v "${drvver}" --all
 			else
-				echo "Removing a driver that was installed by dkms."
+				echo "Uninstalling a driver that was installed by dkms."
 				dkms remove -m "${drvname}" -v "${drvver}" -k "${kerver}" -c "/usr/src/${drvname}-${drvver}/dkms.conf"
 			fi
 		esac
 	done
 	if [ -f /etc/modprobe.d/${OPTIONS_FILE} ]; then
-		echo "Removing ${OPTIONS_FILE} from /etc/modprobe.d"
+		echo "Deleting ${OPTIONS_FILE} from /etc/modprobe.d"
 		rm /etc/modprobe.d/${OPTIONS_FILE}
 	fi
 	if [ -d /usr/src/${DRV_NAME}-${DRV_VERSION} ]; then
-		echo "Removing source files from /usr/src/${DRV_NAME}-${DRV_VERSION}"
+		echo "Deleting source files from /usr/src/${DRV_NAME}-${DRV_VERSION}"
 		rm -r /usr/src/${DRV_NAME}-${DRV_VERSION}
 	fi
 fi
 
 
 echo "Finished checking for and uninstalling previously installed drivers."
-echo ": ---------------------------"
 
 
 echo
+
+
 #echo "Updating driver."
 #git pull
-echo "Starting installation."
+echo "Starting installation:"
 echo "Copying ${OPTIONS_FILE} to /etc/modprobe.d"
 cp -f ${OPTIONS_FILE} /etc/modprobe.d
 
@@ -366,8 +374,12 @@ if ! command -v dkms >/dev/null 2>&1; then
 	if [ "$RESULT" != "0" ]; then
 		echo "An error occurred:  ${RESULT}"
 		echo "Please report this error."
-		echo "Please copy all screen output and paste it into the problem report."
-		echo "You will need to run the following before reattempting installation."
+		echo "Please copy and paste the following items into the problem report."
+		echo "    -all screen output from install-driver.sh"
+		echo "    -the contents of make.log as mentioned 3 lines above"
+		echo "    -the Linux distro and what system hardware you are using"
+		echo "     example: I am using RasPiOS with kernel 6.6 on a RasPi4B"
+		echo "You should run the following before reattempting installation."
 		echo "$ sudo ./uninstall-driver.sh"
 		exit $RESULT
 	fi
@@ -391,13 +403,16 @@ if ! command -v dkms >/dev/null 2>&1; then
 	if [ "$RESULT" = "0" ]; then
         	make clean >/dev/null 2>&1
 		echo "The driver was installed successfully."
-		echo ": ---------------------------"
 		echo
 	else
 		echo "An error occurred:  ${RESULT}"
 		echo "Please report this error."
-		echo "Please copy all screen output and paste it into the problem report."
-		echo "You will need to run the following before reattempting installation."
+		echo "Please copy and paste the following items into the problem report."
+		echo "    -all screen output from install-driver.sh"
+		echo "    -the contents of make.log as mentioned 3 lines above"
+		echo "    -the Linux distro and what system hardware you are using"
+		echo "     example: I am using RasPiOS with kernel 6.6 on a RasPi4B"
+		echo "You should run the following before reattempting installation."
 		echo "$ sudo ./uninstall-driver.sh"
 		exit $RESULT
 	fi
@@ -424,16 +439,19 @@ else
 			echo "$ sudo ./uninstall-driver.sh"
 			exit $RESULT
 		else
-			echo "An error occurred. dkms add error:  ${RESULT}"
-			echo "Please report this error."
-			echo "Please copy all screen output and paste it into the problem report."
-			echo "Run the following before reattempting installation."
-			echo "$ sudo ./uninstall-driver.sh"
-			exit $RESULT
+		echo "An error occurred:  ${RESULT}"
+		echo "Please report this error."
+		echo "Please copy and paste the following items into the problem report."
+		echo "    -all screen output from install-driver.sh"
+		echo "    -the contents of make.log as mentioned 3 lines above"
+		echo "    -the Linux distro and what system hardware you are using"
+		echo "     example: I am using RasPiOS with kernel 6.6 on a RasPi4B"
+		echo "You should run the following before reattempting installation."
+		echo "$ sudo ./uninstall-driver.sh"
+		exit $RESULT
 		fi
 	else
 		echo "The driver was added to dkms successfully."
-		echo ": ---------------------------"
 		echo
 	fi
 
@@ -449,15 +467,18 @@ else
 	RESULT=$?
 
 	if [ "$RESULT" != "0" ]; then
-		echo "An error occurred. dkms build error:  ${RESULT}"
+		echo "An error occurred:  ${RESULT}"
 		echo "Please report this error."
-		echo "Please copy all screen output and paste it into the problem report."
-		echo "Run the following before reattempting installation."
+		echo "Please copy and paste the following items into the problem report."
+		echo "    -all screen output from install-driver.sh"
+		echo "    -the contents of make.log as mentioned 3 lines above"
+		echo "    -the Linux distro and what system hardware you are using"
+		echo "     example: I am using RasPiOS with kernel 6.6 on a RasPi4B"
+		echo "You should run the following before reattempting installation."
 		echo "$ sudo ./uninstall-driver.sh"
 		exit $RESULT
 	else
 		echo "The driver was built by dkms successfully."
-		echo ": ---------------------------"
 	fi
 
 
@@ -467,15 +488,18 @@ else
 	RESULT=$?
 
 	if [ "$RESULT" != "0" ]; then
-		echo "An error occurred. dkms install error:  ${RESULT}"
+		echo "An error occurred:  ${RESULT}"
 		echo "Please report this error."
-		echo "Please copy all screen output and paste it into the problem report."
-		echo "Run the following before reattempting installation."
+		echo "Please copy and paste the following items into the problem report."
+		echo "    -all screen output from install-driver.sh"
+		echo "    -the contents of make.log as mentioned 3 lines above"
+		echo "    -the Linux distro and what system hardware you are using"
+		echo "     example: I am using RasPiOS with kernel 6.6 on a RasPi4B"
+		echo "You should run the following before reattempting installation."
 		echo "$ sudo ./uninstall-driver.sh"
 		exit $RESULT
 	else
 		echo "The driver was installed by dkms successfully."
-		echo ": ---------------------------"
 		echo
 	fi
 fi
