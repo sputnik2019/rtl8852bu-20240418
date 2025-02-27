@@ -856,7 +856,7 @@ export CONFIG_RTL8852BU = m
 all: modules
 
 modules:
-	$(MAKE) ARCH=$(ARCH) CROSS_COMPILE=$(CROSS_COMPILE) -C $(KSRC) M=$(shell pwd) modules
+	$(MAKE) ARCH=$(ARCH) CROSS_COMPILE=$(CROSS_COMPILE) -C $(KSRC) M=$(shell pwd) KBUILD_MODPOST_WARN=1 modules
 
 strip:
 	$(CC_STRIP) $(MODULE_NAME).ko --strip-unneeded
