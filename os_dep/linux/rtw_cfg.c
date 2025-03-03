@@ -430,7 +430,7 @@ int rtw_drv_ant_band_switch = 1; /* 0:OFF , 1:ON, Driver control antenna band sw
 int rtw_single_ant_path; /*0:main ant , 1:aux ant , Fixed single antenna path, default main ant*/
 
 /* 0: doesn't switch, 1: switch to usb 3.0 , 2: switch to usb 2.0 */
-int rtw_switch_usb_mode = 0;
+int rtw_switch_usb_mode = 1;
 
 
 
